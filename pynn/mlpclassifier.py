@@ -1,5 +1,6 @@
 import numpy as np
 from pynn.activations import *
+from pynn.initializers import *
 from collections import deque
 
 
@@ -13,14 +14,7 @@ class MLPClassifier:
         self._initialize_parameters()
 
     def _initialize_parameters(self):
-        """
-        He initialization.
-        https://arxiv.org/pdf/1502.01852.pdf
-        :return:
-        """
-        for i in range(1, self.num_layers):
-            self.weights.append(np.random.randn(self.layers[i], self.layers[i - 1]) * np.sqrt(2.0 / self.layers[i - 1]))
-            self.biases.append(np.zeros((self.layers[i], 1)))
+        self.weights, self.biases = initialize_he(self.layers)
 
     def _feedforward(self, X):
         """
@@ -63,9 +57,9 @@ class MLPClassifier:
     def predict(self, X):
         return np.argmax(self._feedforward(X.T)[-1], axis = 0)
 
-# if __name__ == '__main__':
-#     net = MLPClassifier([50, 5, 4, 3])
-#     X = np.random.randn(1, 50)
-#     Y = np.array([1, 0, 0]).reshape(3, 1)
-#     gradient = net._backpropagate(X.T, Y)
-#     print(gradient)
+if __name__ == '__main__':
+   net = MLPClassifier([50, 5, 4, 3])
+   X = np.random.randn(1, 50)
+   Y = np.array([1, 0, 0]).reshape(3, 1)
+   gradient = net._backpropagate(X.T, Y)
+   print(gradient[0][1].shape)
