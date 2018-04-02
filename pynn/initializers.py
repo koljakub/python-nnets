@@ -1,3 +1,4 @@
+import abc
 import numpy as np
 
 
@@ -6,6 +7,10 @@ class Initializer:
     def __init__(self, seed=42):
         self.seed = seed
         np.random.seed(seed)
+
+    @abc.abstractmethod
+    def initialize(self, shape):
+        return
 
 
 class HeInitializer(Initializer):
