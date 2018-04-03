@@ -38,10 +38,3 @@ def get_function(func_name):
 
 def negative_log_loss(y_hat, y):
     return -np.sum(y * np.log(y_hat + np.finfo(float).eps), axis=0)
-
-if __name__ == '__main__':
-    f = LossFunction("negative_log_loss")
-    y_hat = [0, 0.7]
-    y = [0, 1]
-    result = f(y_hat, y)
-    print(result)
