@@ -13,6 +13,9 @@ class ActivationFunction:
     def __call__(self, x):
         return self.callable_f(x)
 
+    def __str__(self):
+        return self.name
+
 
 class ActivationFunctionDerivative:
 
@@ -25,6 +28,9 @@ class ActivationFunctionDerivative:
 
     def __call__(self, x):
         return self.callable_d_f(x)
+
+    def __str__(self):
+        return self.name
 
 
 def get_function(func_name):
