@@ -1,6 +1,7 @@
 import abc
 from pynn.initializers import *
 from pynn.activations import *
+from pynn.regularizers import *
 
 
 class Layer:
@@ -34,7 +35,7 @@ class Layer:
         return
 
     def __str__(self):
-        return self.__class__.__name__ + " layer ({}) | {} units".format(self.activation_f.name, self.n_units)
+        return self.__class__.__name__ + " layer ({}) | {} units".format(self.activation_f, self.n_units)
 
 
 class Input(Layer):
@@ -51,9 +52,10 @@ class Input(Layer):
 
 class Dense(Layer):
 
-    def __init__(self, n_units, initializer=HeInitializer(42), activation_f="relu"):
+    def __init__(self, n_units, initializer=HeInitializer(42), activation_f="relu", regularizer=None):
         Layer.__init__(self, n_units, activation_f)
         self.initializer = initializer
+        self.regularizer = regularizer
 
     def initialize_parameters(self, prev_n_units):
         self.W, self.b = self.initializer.initialize((self.n_units, prev_n_units))
@@ -67,6 +69,11 @@ class Dense(Layer):
         self.delta = self.next_layer.W.T.dot(self.next_layer.delta) * self.d_A
         self.d_W = self.delta.dot(self.prev_layer.A.T)
         self.d_b = np.sum(self.delta, axis=1, keepdims=True)
+        if (not (self.regularizer is None)):
+            self.regularizer.regularize(self)
+
+    def __str__(self):
+        return Layer.__str__(self) + (" | Regularizer: {}".format(self.regularizer))
 
 
 class Output(Dense):

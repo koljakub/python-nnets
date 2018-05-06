@@ -1,15 +1,16 @@
+from sklearn.datasets import load_digits
 from pynn.model import Model
 from pynn.layers import *
 from pynn.optimizers import *
-from sklearn.datasets import load_digits
 
 
 def mnist_feedforward_ann():
     model = Model("negative_log_loss", AdamOptimizer())
+    global_regularizer = L2Regularizer(0.0006)
     model.add_layer(Input(64))
-    model.add_layer(Dense(128))
-    model.add_layer(Dense(128))
-    model.add_layer(Dense(128))
+    model.add_layer(Dense(128, regularizer=global_regularizer))
+    model.add_layer(Dense(128, regularizer=global_regularizer))
+    model.add_layer(Dense(128, regularizer=global_regularizer))
     model.add_layer(Output(10))
     model.initialize()
     model.print_model_details()
