@@ -7,6 +7,7 @@ class Model:
         self.loss_function = LossFunction(loss_function)
         self.optimizer = optimizer
         self.layers = []
+        self.is_training = False
 
     def feedforward(self, X):
         A = X
@@ -17,6 +18,7 @@ class Model:
 
     def add_layer(self, layer):
         self.layers.append(layer)
+        layer.model = self
 
     def initialize(self):
         for i in range(1, len(self.layers)):
@@ -32,7 +34,10 @@ class Model:
         print("- Optimizer: {}\n".format(self.optimizer.name))
 
     def train(self, train_X, train_Y, batch_size, epochs, learning_rate, verbose=True):
-        return self.optimizer.optimize(self, train_X.T, train_Y.T, batch_size, epochs, learning_rate, verbose)
+        self.is_training = True
+        losses = self.optimizer.optimize(self, train_X.T, train_Y.T, batch_size, epochs, learning_rate, verbose)
+        self.is_training = False
+        return losses
 
     def predict(self, X):
         return self.feedforward(X.T).T

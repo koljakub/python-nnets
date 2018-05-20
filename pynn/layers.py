@@ -19,6 +19,7 @@ class Layer:
         self.d_W = None
         self.d_b = None
         self.delta = None
+        self.model = None
 
     def connect_previous_layer(self, prev_layer):
         self.prev_layer = prev_layer
