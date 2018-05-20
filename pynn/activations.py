@@ -49,6 +49,14 @@ def d_relu(z):
     return np.ones_like(z)
 
 
+def sigmoid(z):
+    return 1.0 / (1 + np.exp(-z))
+
+
+def d_sigmoid(z):
+    return sigmoid(z) * (1 - sigmoid(z))
+
+
 def softmax(z):
     z = np.exp(z - np.max(z, axis=0))
     return z / np.sum(z, axis=0)
