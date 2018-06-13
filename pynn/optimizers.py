@@ -37,6 +37,7 @@ class GradientDescentOptimizer(Optimizer):
                 for j in range(len(model.layers) - 1, 0, -1):
                     layer = model.layers[j]
                     layer.backward()
+                    if (not layer.trainable): continue
                     v_weights[j] = self.beta * v_weights[j] + (1 - self.beta) * layer.d_W
                     v_biases[j] = self.beta * v_biases[j] + (1 - self.beta) * layer.d_b
                     layer.W = layer.W - alpha * (1.0 / batch_size) * v_weights[j]
@@ -80,6 +81,7 @@ class AdamOptimizer(Optimizer):
                 for j in range(len(model.layers) - 1, 0, -1):
                     layer = model.layers[j]
                     layer.backward()
+                    if (not layer.trainable): continue
                     v_weights[j] = self.beta1 * v_weights[j] + (1 - self.beta1) * layer.d_W
                     v_biases[j] = self.beta1 * v_biases[j] + (1 - self.beta1) * layer.d_b
                     s_weights[j] = self.beta2 * s_weights[j] + (1 - self.beta2) * np.square(layer.d_W)

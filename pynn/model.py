@@ -22,9 +22,9 @@ class Model:
 
     def initialize(self):
         for i in range(1, len(self.layers)):
-            self.layers[i].initialize_parameters(self.layers[i - 1].n_units)
             self.layers[i].connect_previous_layer(self.layers[i - 1])
             self.layers[i - 1].connect_next_layer(self.layers[i])
+            self.layers[i].initialize_parameters(self.layers[i - 1].n_units)
 
     def print_model_details(self):
         print("\n- NN architecture:\n")
